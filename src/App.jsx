@@ -13,12 +13,18 @@ const App = () => {
     Phone: "0334619874"
   }
 
+  const addNewTodo = (todo) => {
+    alert(`add todo ${todo} success!!`)
+  }
+
   return (
     <div className="todo-container">
       <div className="todo-title">
         <p>Todo list</p>
       </div>
-      <TodoNew />
+      <TodoNew
+        addNewTodo={addNewTodo}
+      />
       <TodoData
         name={name}
         age={age}
