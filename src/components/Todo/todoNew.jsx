@@ -1,9 +1,9 @@
 import { useState } from "react"
 
 const TodoNew = (props) => {
-    const [valueInput, setValueInput] = useState("Duc")
-
+    const [valueInput, setValueInput] = useState("Example 1")
     const { addNewTodo } = props
+
     const handleAddTodo = () => {
         addNewTodo(valueInput)
         console.log(">>> check value input : ", valueInput)
@@ -27,9 +27,6 @@ const TodoNew = (props) => {
                 style={{ cursor: "pointer" }}
                 onClick={handleAddTodo}
             >ADD</button>
-            <div>
-                Data your input = {valueInput}
-            </div>
         </div>
     )
 }

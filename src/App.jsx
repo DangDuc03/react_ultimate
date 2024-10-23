@@ -17,6 +17,12 @@ const App = () => {
 
     setTodoList([...todoList, newTodo])
   }
+
+  const deleteTodo = (id) => {
+    console.log(">>>check id delete : ", id)
+    const newTodo = todoList.filter(items => items.id !== id) // get all id different input id
+    setTodoList(newTodo)
+  }
   const randomIntFromInterval = (min, max) => { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
@@ -34,6 +40,7 @@ const App = () => {
       {todoList.length > 0 ?
         <TodoData
           todoList={todoList}
+          deleteTodo={deleteTodo}
         />
         :
         <div className='todo-logo'>
