@@ -18,15 +18,7 @@ const App = () => {
     }
   ])
 
-  const name = "Dang Duc"
-  const age = 21
-  const data = {
-    address: "Ha Tinh",
-    Phone: "0334619874"
-  }
-
   const addNewTodo = (todo) => {
-    alert(`add todo ${todo} success!!`)
     const newTodo = {
       id: randomIntFromInterval(1, 99999),
       name: todo
@@ -48,9 +40,6 @@ const App = () => {
         addNewTodo={addNewTodo}
       />
       <TodoData
-        name={name}
-        age={age}
-        data={data}
         todoList={todoList}
       />
 

@@ -19,6 +19,12 @@
     justify-content: center;
 }
 
+.todo-items {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
 .todo-data {
     margin-top: 20px;
     border-radius: 5px;
