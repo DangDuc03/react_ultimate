@@ -1,11 +1,12 @@
 
 const TodoData = (props) => {
-    const { name, age, data } = props
-    console.log(">>>check props :", props)
+    const { name, age, data, todoList } = props
     return (<div className="todo-data">
         <p> name : {name}</p>
         <p> age : {age}</p>
-        {/* <p> data : {props.data}</p> */}
+        <div>
+            <p>{JSON.stringify(todoList)}</p>
+        </div>
     </div>
     )
 }
