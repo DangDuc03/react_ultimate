@@ -1,26 +1,29 @@
-import { Button, Input } from "antd";
+import { Button, Input, notification } from "antd";
 import { useState } from "react";
-import axios from "axios";
+import { createUserAPI } from "../../services/api.service";
 
 
 const UserForm = () => {
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassWord] = useState("")
-    const [phoneNumber, setPhoneNumber] = useState("")
+    const [phone, setPhone] = useState("")
 
-    const handleCreateUser = () => {
-        const URL_BACKEND = "http://localhost:8080/api/v1/user";
-        const data = {
-            fullName: fullName,
-            email: email,
-            password: password,
-            phone: phoneNumber
-
-            // or you can code : { fullName, email, password, phoneNumber }
+    const handleCreateUser = async () => {
+        const response = await createUserAPI(fullName, email, password, phone)
+        // response đã can thiệp từ interceptor
+        if (response.data) {
+            notification.success({
+                message: "Create User",
+                description: "Tạo mới người dùng thành công !"
+            })
+        } else {
+            notification.error({
+                message: "Error Create User!",
+                description: JSON.stringify(response.message)
+            })
         }
-        axios.post(URL_BACKEND, data)
-        console.log(">>> check info : ", { fullName, email, password, phoneNumber }) // user {} to show object
+        console.log(">>> check response : ", response.data)
     }
 
     return (
@@ -48,10 +51,10 @@ const UserForm = () => {
                     />
                 </div>
                 <div>
-                    <span>Phone Number</span>
+                    <span>Phone </span>
                     <Input
-                        value={phoneNumber}
-                        onChange={(event) => setPhoneNumber(event.target.value)}
+                        value={phone}
+                        onChange={(event) => setPhone(event.target.value)}
                     />
                 </div>
                 <div>
