@@ -3,13 +3,22 @@ import { useState } from "react";
 import { createUserAPI } from "../../services/api.service";
 
 
-const UserForm = () => {
+const UserForm = (props) => {
+    const { loadUser } = props
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassWord] = useState("")
     const [phone, setPhone] = useState("")
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const resetAndCloseModule = () => {
+        setIsModalOpen(false)
+        setFullName("")
+        setEmail("")
+        setPassWord("")
+        setPhone("")
+    }
 
     const handleCreateUser = async () => {
         const response = await createUserAPI(fullName, email, password, phone)
@@ -19,14 +28,14 @@ const UserForm = () => {
                 message: "Create User",
                 description: "Tạo mới người dùng thành công !"
             })
-            setIsModalOpen(false);
+            resetAndCloseModule();
+            await loadUser(); //user await because in users.js loadUser used async
         } else {
             notification.error({
                 message: "Error Create User!",
                 description: JSON.stringify(response.message)
             })
         }
-        console.log(">>> check response : ", response.data)
     }
 
     return (
@@ -41,7 +50,7 @@ const UserForm = () => {
             <Modal title="Create User"
                 open={isModalOpen}
                 onOk={() => handleCreateUser()}
-                onCancel={() => setIsModalOpen(false)}
+                onCancel={() => resetAndCloseModule()}
                 maskClosable={false} // không cho phép click ra bên ngoài khi mở module
                 okText={"CREATE"}
             >
