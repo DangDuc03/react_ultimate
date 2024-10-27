@@ -18,7 +18,13 @@ const updateUserAPI = () => {
     
 }
 
+const getAllUserAPI = () => {
+    const URL_BACKEND = "/api/v1/user";
+    return axios.get(URL_BACKEND)
+}
+
 export {
     createUserAPI,
-    updateUserAPI
+    updateUserAPI,
+    getAllUserAPI
 }

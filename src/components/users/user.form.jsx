@@ -30,7 +30,7 @@ const UserForm = () => {
         <div style={{ margin: "20px" }}>
             <div style={{ display: "flex", gap: 10, flexDirection: "column" }}>
                 <div>
-                    <span>UserName</span>
+                    <span>FullName</span>
                     <Input
                         value={fullName}
                         onChange={(event) => setFullName(event.target.value)}
