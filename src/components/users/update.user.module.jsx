@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Input, notification, Modal } from "antd";
+import { updateUserAPI } from "../../services/api.service";
 
 
 const UpdateUserModal = (props) => {
@@ -8,7 +9,7 @@ const UpdateUserModal = (props) => {
     const [fullName, setFullName] = useState("")
     const [phone, setPhone] = useState("")
 
-    const { isModalUpdateOpen, setIsModalUpdateOpen, dataUpdate, setDataUpdate } = props
+    const { isModalUpdateOpen, setIsModalUpdateOpen, dataUpdate, setDataUpdate, loadUser } = props
 
     useEffect(() => {
         console.log("check data update props: ", dataUpdate)
@@ -28,23 +29,23 @@ const UpdateUserModal = (props) => {
         setDataUpdate(null)
     }
 
-    // const handleCreateUser = async () => {
-    //     const response = await createUserAPI(fullName, email, password, phone)
-    //     // response đã can thiệp từ interceptor
-    //     if (response.data) {
-    //         notification.success({
-    //             message: "Create User",
-    //             description: "Tạo mới người dùng thành công !"
-    //         })
-    //         resetAndCloseModule();
-    //         await loadUser(); //user await because in users.js loadUser used async
-    //     } else {
-    //         notification.error({
-    //             message: "Error Create User!",
-    //             description: JSON.stringify(response.message)
-    //         })
-    //     }
-    // }
+    const handleCreateUser = async () => {
+        const response = await updateUserAPI(id, fullName, phone)
+        // response đã can thiệp từ interceptor
+        if (response.data) {
+            notification.success({
+                message: "Update User!",
+                description: "Cập nhật thành công !"
+            })
+            resetAndCloseModule();
+            await loadUser(); //user await because in users.js loadUser used async
+        } else {
+            notification.error({
+                message: "Error Update User!",
+                description: JSON.stringify(response.message)
+            })
+        }
+    }
 
 
     return (
