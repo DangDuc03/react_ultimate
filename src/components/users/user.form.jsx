@@ -29,7 +29,7 @@ const UserForm = (props) => {
                 description: "Tạo mới người dùng thành công !"
             })
             resetAndCloseModule();
-            await loadUser(); //user await because in users.js loadUser used async
+            await loadUser();
         } else {
             notification.error({
                 message: "Error Create User!",

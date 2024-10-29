@@ -1,21 +1,22 @@
-import { Table } from 'antd';
+import { Table, Popconfirm, notification } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import UpdateUserModal from './update.user.module';
 import { useState } from 'react';
 import UserDetailModule from './user.detail.module';
+import { deleteUserAPI } from '../../services/api.service';
 
 
 const UserTable = (props) => {
     // get props
     const { dataUser, loadUser } = props
 
-    // create stateUpdate
+    // stateUpdate
     const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
     const [dataUpdate, setDataUpdate] = useState(null);
-
-    // create State DetailUser
+    // State DetailUser
     const [isDetailModuleOpen, setIsDetailModuleOpen] = useState(false)
     const [detailModule, setDetailModule] = useState(null)
+
 
     const columns = [
         {
@@ -62,11 +63,40 @@ const UserTable = (props) => {
                             setIsModalUpdateOpen(true);
                         }}
                     />
-                    <DeleteOutlined style={{ cursor: "pointer", color: "red" }} />
+                    <Popconfirm
+                        title="Delete User"
+                        description="Bạn chắc chắn muốn xóa người dùng ?"
+                        onConfirm={() => handleDeleteUser(record._id)}
+                        okText="Yes"
+                        cancelText="No"
+                        placement='left'
+                    >
+                        <DeleteOutlined
+                            style={{ cursor: "pointer", color: "red" }}
+                        />
+                    </Popconfirm>
+
                 </div>
             ),
         },
     ];
+
+    const handleDeleteUser = async (id) => {
+        const response = await deleteUserAPI(id)
+        if (response.data) {
+            notification.success({
+                message: "Delete User!",
+                description: "Xóa thành công !"
+            })
+            await loadUser() //used await because in users.js loadUser used async
+
+        } else {
+            notification.error({
+                message: "Error Delete User!",
+                description: JSON.stringify(response.message)
+            })
+        }
+    }
 
     return (
         <>
@@ -88,6 +118,7 @@ const UserTable = (props) => {
                 isDetailModuleOpen={isDetailModuleOpen}
                 setIsDetailModuleOpen={setIsDetailModuleOpen}
             />
+
         </>
     )
 }
