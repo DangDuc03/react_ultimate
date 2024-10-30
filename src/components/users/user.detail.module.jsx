@@ -10,8 +10,10 @@ const UserDetailModule = (props) => {
     const [email, setEmail] = useState("")
     const [phone, setPhone] = useState("")
 
+    const [selectedFile, setSelectedFile] = useState()
+    const [preview, setPreview] = useState()
+
     useEffect(() => {
-        console.log("check data update props: ", detailModule)
         if (detailModule) {
             setID(detailModule._id)
             setFullName(detailModule.fullName)
@@ -21,6 +23,21 @@ const UserDetailModule = (props) => {
 
     }, [detailModule])
 
+    const onHandleUploadFile = (event) => {
+        if (!event.target.files || event.target.files.length === 0) {
+            setSelectedFile(null)
+            setPreview(null)
+            return
+        }
+        const file = event.target.files[0]
+        if (file) {
+            setSelectedFile(file)
+            setPreview(URL.createObjectURL(file))
+        }
+        console.log("check file : ", file)
+    }
+
+    console.log("check preview : ", preview)
 
     return (
         <>
@@ -41,8 +58,15 @@ const UserDetailModule = (props) => {
                         <p>Email : {email}</p><br />
                         <p>Phone : {phone}</p><br />
                         <p>Avatar : </p><br />
-                        <div >
-                            <img style={{ width: "100px", height: "100px", borderRadius: "10px" }}
+                        <div
+                            style={{
+                                marginTop: "10px",
+                                height: "100px",
+                                width: "150px",
+                                border: "1px solid #ccc"
+                            }}
+                        >
+                            <img style={{ width: "100%", height: "100%", objectFit: "contain" }}
                                 src={`${import.meta.env.VITE_BACKEND_URL}/images/avatar/${detailModule.avatar}`} alt="Image Error" />
                         </div>
                         <div>
@@ -60,8 +84,23 @@ const UserDetailModule = (props) => {
                             >
                                 Upload File
                             </label>
-                            <input type="file" id="btnUpload" hidden />
+                            <input
+                                onChange={(event) => onHandleUploadFile(event)}
+                                type="file" id="btnUpload" hidden />
                         </div>
+                        {preview &&
+                            <div
+                                style={{
+                                    marginTop: "10px",
+                                    height: "100px",
+                                    width: "150px",
+                                    border: "1px solid #ccc"
+                                }}
+                            >
+                                <img style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                                    src={preview} alt="Image Error" />
+                            </div>
+                        }
                     </>
                     :
                     <p>Không có dữ liệu</p>
