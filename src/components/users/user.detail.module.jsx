@@ -1,9 +1,10 @@
-import { Drawer } from "antd";
+import { Button, Drawer, notification } from "antd";
 import { useEffect, useState } from "react";
+import { updateUserAPI, UploadFileAPI } from "../../services/api.service";
 
 const UserDetailModule = (props) => {
 
-    const { detailModule, setDetailModule, isDetailModuleOpen, setIsDetailModuleOpen } = props;
+    const { detailModule, setDetailModule, isDetailModuleOpen, setIsDetailModuleOpen, loadUser } = props;
 
     const [id, setID] = useState("")
     const [fullName, setFullName] = useState("")
@@ -31,10 +32,43 @@ const UserDetailModule = (props) => {
         }
         const file = event.target.files[0]
         if (file) {
-            setSelectedFile(file)
-            setPreview(URL.createObjectURL(file))
+            setSelectedFile(file) // save file
+            setPreview(URL.createObjectURL(file)) // create URL for File
         }
         console.log("check file : ", file)
+    }
+
+    const handleSaveUploadFile = async () => {
+        // step 1 : upload file
+        const resUpload = await UploadFileAPI(selectedFile, "avatar")
+        if (resUpload.data) {
+            // success
+            const newAvatar = resUpload.data.fileUploaded;
+            // step 2: update avatar
+            const resUpdateAvatar = await updateUserAPI(detailModule._id, detailModule.fullName, detailModule.phone, newAvatar)
+            if (resUpdateAvatar.data) {
+                setIsDetailModuleOpen(false);
+                setSelectedFile(null)
+                setPreview(null)
+                await loadUser();
+                notification.success({
+                    message: "Update avatar success",
+                    description: "Cập nhật avatar thành công!"
+                })
+            } else {
+                notification.error({
+                    message: "Update avatar error!!",
+                    description: JSON.stringify(resUpload.message)
+                })
+            }
+        } else {
+            // error
+            notification.error({
+                message: "Error upload file!",
+                description: JSON.stringify(resUpload.message)
+            })
+        }
+
     }
 
     console.log("check preview : ", preview)
@@ -89,17 +123,22 @@ const UserDetailModule = (props) => {
                                 type="file" id="btnUpload" hidden />
                         </div>
                         {preview &&
-                            <div
-                                style={{
+                            <>
+                                <div style={{
                                     marginTop: "10px",
                                     height: "100px",
                                     width: "150px",
-                                    border: "1px solid #ccc"
+                                    marginBottom: "15px"
                                 }}
-                            >
-                                <img style={{ width: "100%", height: "100%", objectFit: "contain" }}
-                                    src={preview} alt="Image Error" />
-                            </div>
+                                >
+                                    <img style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                                        src={preview} alt="Image Error" />
+                                </div>
+                                <Button
+                                    type="primary"
+                                    onClick={() => handleSaveUploadFile()}
+                                >SAVE</Button>
+                            </>
                         }
                     </>
                     :

@@ -117,6 +117,8 @@ const UserTable = (props) => {
                 setDetailModule={setDetailModule}
                 isDetailModuleOpen={isDetailModuleOpen}
                 setIsDetailModuleOpen={setIsDetailModuleOpen}
+                loadUser={loadUser}
+
             />
 
         </>
