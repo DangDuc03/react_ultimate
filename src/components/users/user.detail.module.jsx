@@ -35,7 +35,6 @@ const UserDetailModule = (props) => {
             setSelectedFile(file) // save file
             setPreview(URL.createObjectURL(file)) // create URL for File
         }
-        console.log("check file : ", file)
     }
 
     const handleSaveUploadFile = async () => {
@@ -58,7 +57,7 @@ const UserDetailModule = (props) => {
             } else {
                 notification.error({
                     message: "Update avatar error!!",
-                    description: JSON.stringify(resUpload.message)
+                    description: JSON.stringify(resUpdateAvatar.message)
                 })
             }
         } else {
@@ -70,8 +69,6 @@ const UserDetailModule = (props) => {
         }
 
     }
-
-    console.log("check preview : ", preview)
 
     return (
         <>
