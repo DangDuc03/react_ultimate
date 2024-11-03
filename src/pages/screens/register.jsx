@@ -1,13 +1,35 @@
 
 import React from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, notification } from 'antd';
+import { registerUserAPI } from '../../services/api.service';
+import { useNavigate } from "react-router-dom";
 
 
 const RegisterPage = () => {
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         console.log(values);
+
+        const response = await registerUserAPI(
+            values.fullName,
+            values.email,
+            values.password,
+            values.phone
+        )
+        if (response.data) {
+            notification.success({
+                message: "Register User",
+                description: "Đăng ký người dùng thành công!"
+            })
+            navigate("/login")
+        } else {
+            notification.error({
+                message: "Register User Error!",
+                description: JSON.stringify(response.message)
+            })
+        }
     };
 
     return (
@@ -63,7 +85,8 @@ const RegisterPage = () => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your Phone!',
+                                pattern: new RegExp(/\d+/g),
+                                message: 'Please enter a valid phone number!',
                             },
                         ]}
                     >
@@ -74,6 +97,7 @@ const RegisterPage = () => {
                     </div>
                 </div>
             </Form>
+
         </>
 
     )
