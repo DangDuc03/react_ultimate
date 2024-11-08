@@ -52,6 +52,7 @@ const  UploadFileAPI = (file, folder) => {
     return axios.post(URL_BACKEND, bodyFormData, config)
 }
 
+// auth
 const registerUserAPI = (fullName, email, password, phone) => {
     const URL_BACKEND = "/api/v1/user/register";
         const data = {
@@ -65,6 +66,18 @@ const registerUserAPI = (fullName, email, password, phone) => {
         return axios.post(URL_BACKEND, data)
 }
 
+const loginUserAPI = (email,password) => {
+    const URL_BACKEND = "/api/v1/auth/login";
+        const data = {
+            username: email, // backend : client
+            password: password,
+            delay : 2000 // tuy backend thiết kế, thêm vào để lỡ call api bị chậm trễ
+
+            // or you can code : { fullName, email, password, phone }
+        }
+        return axios.post(URL_BACKEND, data)
+}
+
 
 export {
     createUserAPI,
@@ -72,5 +85,6 @@ export {
     getAllUserAPI,
     deleteUserAPI,
     UploadFileAPI,
-    registerUserAPI
+    registerUserAPI,
+    loginUserAPI
 }
