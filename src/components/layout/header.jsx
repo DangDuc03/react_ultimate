@@ -1,13 +1,22 @@
 import { Link, NavLink } from 'react-router-dom';
-import { HomeOutlined, UserOutlined, ProductOutlined, SettingOutlined } from '@ant-design/icons';
+import { HomeOutlined, UserOutlined, ProductOutlined, SettingOutlined, LoginOutlined, AliwangwangOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../contexts/auth.context';
+import { icons } from 'antd/es/image/PreviewGroup';
 const Header = () => {
     const [current, setCurrent] = useState('');
+
+    const { userLogin, setUserLogin } = useContext(AuthContext)
+
+    console.log("check userLogin : ", userLogin)
+
     const onClick = (e) => {
         console.log('click ', e);
         setCurrent(e.key);
     };
+
+
 
     const items = [
         {
@@ -27,21 +36,32 @@ const Header = () => {
             key: 'books',
             icon: <ProductOutlined />,
         },
-        {
-            label: "Setting",
-            key: 'setting',
-            icon: <SettingOutlined />,
-            children: [
+        ...(!userLogin.id
+            ? [{
+                label: <Link to={"login"}>Đăng Nhập</Link>,
+                key: 'login',
+                icon: <LoginOutlined />
+            },]
+            : []
+        ),
+
+        ...(userLogin.id
+            ? [
                 {
-                    label: <Link to={"login"}>Đăng Nhập</Link>,
-                    key: 'login',
-                },
-                {
-                    label: <Link to={"register"}>Đăng Xuất</Link>,
-                    key: 'logout',
-                },
-            ],
-        }
+                    label: `welcome back ${userLogin.fullName}`,
+                    key: 'setting',
+                    icon: <AliwangwangOutlined />,
+                    children: [
+
+                        {
+                            label: <Link to={"register"}>Đăng Xuất</Link>,
+                            key: 'logout',
+                        },
+                    ],
+                }]
+            : []
+        )
+
     ];
 
     return (

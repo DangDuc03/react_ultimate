@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Button, Checkbox, Form, Input, notification, Row, Col, Divider, message, } from 'antd';
+import React, { useContext, useState } from 'react';
+import { Button, Form, Input, notification, Row, Col, Divider, message, } from 'antd';
 import { json, Link, useNavigate } from "react-router-dom";
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { loginUserAPI } from '../../services/api.service';
+import { AuthContext } from '../../components/contexts/auth.context';
+
 
 
 const LoginPage = () => {
@@ -11,6 +13,9 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
 
+    const { setUserLogin } = useContext(AuthContext)
+
+
     const onFinish = async (values) => {
         console.log('Success with username and password:', values);
         setLoading(true)
@@ -18,6 +23,8 @@ const LoginPage = () => {
         setLoading(false)
         if (res.data) {
             message.success("Đăng nhập thành công!")
+            localStorage.setItem("access_token", res.data.access_token)
+            setUserLogin(res.data.user)
             navigate("/")
         } else {
             notification.error({
@@ -72,7 +79,13 @@ const LoginPage = () => {
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password
+                                onKeyDown={(event) => {
+                                    if (event.key === "Enter") {
+                                        form.submit()
+                                    }
+                                }}
+                            />
                         </Form.Item>
 
                         <Form.Item
