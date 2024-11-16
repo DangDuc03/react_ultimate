@@ -27,7 +27,6 @@ const BookForm = (props) => {
     }
 
     const onHandleUploadFile = (event) => {
-        console.log("check event upload filebook: ", event)
         if (!event.target.files || event.target.files.length === 0) {
             setSelectedFile(null)
             setPreview(null)

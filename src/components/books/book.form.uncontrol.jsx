@@ -33,6 +33,14 @@ const BookFormUnControl = (props) => {
 
     const onFinish = async (values) => {
         const { mainText, author, price, quantity, category } = values
+
+        if (!selectedFile) {
+            notification.error({
+                message: "Create Book Error!",
+                description: "Vui lòng chọn ảnh sản phẩm !"
+            })
+            return;
+        }
         // step 1. get url image
         const resUpload = await UploadFileAPI(selectedFile, "book")
         if (resUpload.data) {
