@@ -30,8 +30,8 @@ const BookDetail = (props) => {
                             <p>Tác giả : {dataDetailBook.author}</p><br />
                             <p>Thể loại : {dataDetailBook.category}</p><br />
                             <p>Giá tiền : {priceVND()}</p><br />
-                            <p>Số lượng : {dataDetailBook.sold}</p><br />
-                            <p>Đã bán : {dataDetailBook.quantity}</p><br />
+                            <p>Số lượng : {dataDetailBook.quantity}</p><br />
+                            <p>Đã bán : {dataDetailBook.sold}</p><br />
                             <p>Hình ảnh : </p><br />
                             <div
                                 style={{

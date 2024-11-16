@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import BookForm from "../../components/books/book.form.control";
 import BookTable from "../../components/books/book.table";
 import { getAllBooksAPI } from "../../services/api.service";
+import BookFormUnControl from "../../components/books/book.form.uncontrol";
 
 const BooksPage = () => {
     const [dataBook, setDataBook] = useState([])
@@ -25,7 +26,10 @@ const BooksPage = () => {
 
     return (
         <div>
-            <BookForm
+            {/* <BookForm
+                loadBooks={loadBooks}
+            /> */}
+            <BookFormUnControl
                 loadBooks={loadBooks}
             />
             <BookTable
