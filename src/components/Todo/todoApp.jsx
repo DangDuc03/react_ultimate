@@ -17,7 +17,6 @@ const TodoApp = () => {
     }
 
     const deleteTodo = (id) => {
-        console.log(">>>check id delete : ", id)
         const newTodo = todoList.filter(items => items.id !== id) // get all id different input id
         setTodoList(newTodo)
     }

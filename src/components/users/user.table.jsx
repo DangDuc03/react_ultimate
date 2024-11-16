@@ -122,7 +122,7 @@ const UserTable = (props) => {
             }
         }
 
-        console.log(">>> check onChange : ", { pagination, filters, sorter, extra })
+
     };
 
     return (

@@ -12,8 +12,6 @@ const Header = () => {
     const navigate = useNavigate();
 
 
-    console.log("check userLogin : ", userLogin)
-
     const onClick = (e) => {
         console.log('click ', e);
         setCurrent(e.key);
