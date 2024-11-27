@@ -13,6 +13,7 @@ const UserTable = (props) => {
     // stateUpdate
     const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
     const [dataUpdate, setDataUpdate] = useState(null);
+
     // State DetailUser
     const [isDetailModuleOpen, setIsDetailModuleOpen] = useState(false)
     const [detailModule, setDetailModule] = useState(null)

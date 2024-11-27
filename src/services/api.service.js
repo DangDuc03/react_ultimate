@@ -14,10 +14,10 @@ const createUserAPI = (fullName, email, password, phone) => {
         return axios.post(URL_BACKEND, data)
 }
 
-const updateUserAPI = (_id, fullName, phone, avatar) => {
+const updateUserAPI = (id, fullName, phone, avatar) => {
     const URL_BACKEND = "/api/v1/user";
     const data = {
-        _id : _id,
+        _id : id,
         fullName: fullName,
         phone: phone,
         avatar: avatar
@@ -108,6 +108,27 @@ const createBookAPI = ( thumbnail, mainText, author, price, quantity, category) 
     return axios.post(URL_BACKEND, data)
 }
 
+const updateBookAPI = (_id, thumbnail, mainText, author, price, quantity, category) => {
+    const URL_BACKEND = `/api/v1/book`
+    const data = {
+        _id : _id,
+        thumbnail: thumbnail,
+        mainText: mainText,
+        author: author,
+        price: price,
+        quantity: quantity,
+        category: category
+    }
+
+    return axios.put(URL_BACKEND,data)
+}
+
+const deleteBookAPI = (_id) => {
+    const URL_BACKEND = `api/v1/book/${_id}`
+
+    return axios.delete(URL_BACKEND)
+}
+
 export {
     createUserAPI,
     updateUserAPI,
@@ -120,5 +141,7 @@ export {
     LogOutAPI,
     // API Books
     getAllBooksAPI,
-    createBookAPI
+    createBookAPI,
+    updateBookAPI,
+    deleteBookAPI
 }

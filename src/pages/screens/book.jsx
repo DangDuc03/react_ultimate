@@ -10,6 +10,9 @@ const BooksPage = () => {
     const [pageSize, setPageSize] = useState(5) // thực tế thì tối thiểu thường hiển thị 10 phần tử
     const [total, setTotal] = useState(0)
 
+    const [selectedFile, setSelectedFile] = useState()
+    const [preview, setPreview] = useState()
+
     useEffect(() => {
         loadBooks()
     }, [current, pageSize])
@@ -24,6 +27,20 @@ const BooksPage = () => {
         }
     }
 
+    const onHandleUploadFile = (event) => {
+        if (!event.target.files || event.target.files.length === 0) {
+            setSelectedFile(null)
+            setPreview(null)
+            return;
+        }
+        const file = event.target.files[0]
+        console.log("check files upload book: ", file)
+        if (file) {
+            setSelectedFile(file) // save file
+            setPreview(URL.createObjectURL(file)) // create URL for File
+        }
+    }
+
     return (
         <div>
             {/* <BookForm
@@ -31,14 +48,25 @@ const BooksPage = () => {
             /> */}
             <BookFormUnControl
                 loadBooks={loadBooks}
+                selectedFile={selectedFile}
+                preview={preview}
+                onHandleUploadFile={onHandleUploadFile}
+                setSelectedFile={setSelectedFile}
+                setPreview={setPreview}
             />
             <BookTable
+                loadBooks={loadBooks}
                 current={current}
                 pageSize={pageSize}
                 total={total}
                 dataBook={dataBook}
                 setPageSize={setPageSize}
                 setCurrent={setCurrent}
+                onHandleUploadFile={onHandleUploadFile}
+                setPreview={setPreview}
+                preview={preview}
+                selectedFile={selectedFile}
+                setSelectedFile={setSelectedFile}
             />
         </div>
     )

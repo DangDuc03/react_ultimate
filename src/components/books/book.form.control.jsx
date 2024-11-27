@@ -5,14 +5,12 @@ import { createBookAPI, UploadFileAPI } from "../../services/api.service";
 
 const BookForm = (props) => {
 
-    const { loadBooks } = props
+    const { loadBooks, selectedFile, preview, setSelectedFile, setPreview, onHandleUploadFile } = props
     const [mainText, setMainText] = useState("")
     const [author, setAuthor] = useState("")
     const [price, setPrice] = useState("")
     const [quantity, setQuantity] = useState("")
     const [category, setCategory] = useState("")
-    const [selectedFile, setSelectedFile] = useState()
-    const [preview, setPreview] = useState()
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const resetAndCloseModule = () => {
@@ -26,19 +24,7 @@ const BookForm = (props) => {
         setPreview(null)
     }
 
-    const onHandleUploadFile = (event) => {
-        if (!event.target.files || event.target.files.length === 0) {
-            setSelectedFile(null)
-            setPreview(null)
-            return;
-        }
-        const file = event.target.files[0]
-        console.log("check files upload book: ", file)
-        if (file) {
-            setSelectedFile(file) // save file
-            setPreview(URL.createObjectURL(file)) // create URL for File
-        }
-    }
+
 
     const createNewBook = async () => {
 

@@ -1,15 +1,55 @@
 import React, { useState } from 'react';
-import { Space, Table, Tag } from 'antd';
+import { message, notification, Popconfirm, Space, Table, Tag } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import BookDetail from './book.detail';
+import BookUpdateByControl from './book.update.control';
+import BookUpdateUnControl from './book.update.uncontrol';
+import { deleteBookAPI } from '../../services/api.service';
 
 const BookTable = (props) => {
 
-    const { current, pageSize, setCurrent, setPageSize, total, dataBook } = props
+    const { current, pageSize, setCurrent, setPageSize, total,
+        dataBook, loadBooks, onHandleUploadFile, setPreview,
+        preview, selectedFile, setSelectedFile
+    } = props
 
     const [isOpenDetailBook, setIsOpenDetailBook] = useState(false)
     const [dataDetailBook, setDataDetailBook] = useState(null)
 
+    // stateUpdate
+    const [isUpdateBookOpen, setIsUpdateBookOpen] = useState(false);
+    const [dataUpdateBook, setDataUpdateBook] = useState(null);
+
+    // change page
+    const onChange = (pagination, filters, sorter, extra) => {
+        // setCurrent, setPageSize
+        if (pagination && pagination.current) {
+            if (+pagination.current !== +current) {
+                setCurrent(pagination.current) // "1" ==> 1
+            }
+        }
+        if (pagination && pagination.pageSize) {
+            if (+pagination.pageSize !== +pageSize) {
+                setPageSize(pagination.pageSize) // "5" ==> 5
+            }
+        }
+
+    };
+
+    // deleteBook
+    const handleDeleteBook = async (id) => {
+        // id ==> record._id
+        const resDeleteBook = await deleteBookAPI(id)
+        if (resDeleteBook.data) {
+            message.success("Delete Book Success !")
+            loadBooks()
+        } else {
+            notification.error({
+                message: "Delete Book Error!",
+                description: JSON.stringify(resDeleteBook.message)
+            })
+        }
+    }
 
     const columns = [
         {
@@ -66,42 +106,36 @@ const BookTable = (props) => {
         },
         {
             title: 'Action',
+            key: 'action',
             render: (_, record) => (
-                <Space size="middle">
-                    <div
-                        style={{
-                            color: "orange",
-                            cursor: "pointer"
+                <div style={{ display: "flex", gap: "20px" }}>
+                    <EditOutlined
+                        style={{ cursor: "pointer", color: "blue" }}
+                        onClick={() => {
+                            setDataUpdateBook(record)
+                            setIsUpdateBookOpen(true);
                         }}
+                    />
+                    <Popconfirm
+                        title="Delete User"
+                        description="Bạn chắc chắn muốn xóa người dùng ?"
+                        onConfirm={() => handleDeleteBook(record._id)}
+                        okText="Yes"
+                        cancelText="No"
+                        placement='left'
                     >
-                        <EditOutlined />
-                    </div>
-                    <div
-                        style={{
-                            color: "red",
-                            cursor: "pointer"
-                        }}>
-                        <DeleteOutlined />
-                    </div>
-                </Space>
+                        <DeleteOutlined
+                            style={{ cursor: "pointer", color: "red" }}
+                        />
+                    </Popconfirm>
+
+                </div>
             ),
         },
     ];
 
-    const onChange = (pagination, filters, sorter, extra) => {
-        // setCurrent, setPageSize
-        if (pagination && pagination.current) {
-            if (+pagination.current !== +current) {
-                setCurrent(pagination.current) // "1" ==> 1
-            }
-        }
-        if (pagination && pagination.pageSize) {
-            if (+pagination.pageSize !== +pageSize) {
-                setPageSize(pagination.pageSize) // "5" ==> 5
-            }
-        }
 
-    };
+
 
 
     return (
@@ -124,6 +158,33 @@ const BookTable = (props) => {
                 setIsOpenDetailBook={setIsOpenDetailBook}
                 dataDetailBook={dataDetailBook}
                 setDataDetailBook={setDataDetailBook}
+            />
+
+            {/* <BookUpdateByControl
+                loadBooks={loadBooks}
+                dataUpdateBook={dataUpdateBook}
+                setDataUpdateBook={setDataUpdateBook}
+                isUpdateBookOpen={isUpdateBookOpen}
+                setIsUpdateBookOpen={setIsUpdateBookOpen}
+                onHandleUploadFile={onHandleUploadFile}
+                setPreview={setPreview}
+                preview={preview}
+                selectedFile={selectedFile}
+                setSelectedFile={setSelectedFile}
+            /> */}
+
+            <BookUpdateUnControl
+                setIsUpdateBookOpen={setIsUpdateBookOpen}
+                isUpdateBookOpen={isUpdateBookOpen}
+                setSelectedFile={setSelectedFile}
+                loadBooks={loadBooks}
+                onHandleUploadFile={onHandleUploadFile}
+                dataUpdateBook={dataUpdateBook}
+                selectedFile={selectedFile}
+                setDataUpdateBook={setDataUpdateBook}
+
+
+
             />
         </>
     )

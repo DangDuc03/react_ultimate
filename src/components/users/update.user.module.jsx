@@ -28,7 +28,7 @@ const UpdateUserModal = (props) => {
         setDataUpdate(null)
     }
 
-    const handleCreateUser = async () => {
+    const handleUpdateUser = async () => {
         const response = await updateUserAPI(id, fullName, phone)
         // response đã can thiệp từ interceptor
         if (response.data) {
@@ -46,12 +46,11 @@ const UpdateUserModal = (props) => {
         }
     }
 
-
     return (
         <>
             <Modal title="Update User"
                 open={isModalUpdateOpen}
-                onOk={() => handleCreateUser()}
+                onOk={() => handleUpdateUser()}
                 onCancel={() => resetAndCloseModule()}
                 maskClosable={false} // không cho phép click ra bên ngoài khi mở module
                 okText={"UPDATE"}
