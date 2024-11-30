@@ -8,12 +8,14 @@ const UserPage = () => {
     const [current, setCurrent] = useState(1)
     const [pageSize, setPageSize] = useState(5) // thực tế thì tối thiểu thường hiển thị 10 phần tử
     const [total, setTotal] = useState(0)
+    const [loadingTable, setLoadingTable] = useState(null)
 
     useEffect(() => {
         loadUser()
     }, [current, pageSize])
 
     const loadUser = async () => {
+        setLoadingTable(true)
         const response = await getAllUserAPI(current, pageSize)
         if (response.data) {
             setDataUser(response.data.result)
@@ -21,6 +23,7 @@ const UserPage = () => {
             setPageSize(response.data.meta.pageSize)
             setTotal(response.data.meta.total)
         }
+        setLoadingTable(false)
     }
 
     // lift up state
@@ -37,6 +40,7 @@ const UserPage = () => {
                 total={total}
                 setCurrent={setCurrent}
                 setPageSize={setPageSize}
+                loadingTable={loadingTable}
             />
         </div>
     )

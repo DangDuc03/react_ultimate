@@ -10,7 +10,7 @@ const BookTable = (props) => {
 
     const { current, pageSize, setCurrent, setPageSize, total,
         dataBook, loadBooks, onHandleUploadFile, setPreview,
-        preview, selectedFile, setSelectedFile
+        preview, selectedFile, setSelectedFile, loadingTable
     } = props
 
     const [isOpenDetailBook, setIsOpenDetailBook] = useState(false)
@@ -144,6 +144,7 @@ const BookTable = (props) => {
                 columns={columns}
                 dataSource={dataBook}
                 onChange={onChange}
+                loading={loadingTable}
                 pagination={
                     {
                         current: current,

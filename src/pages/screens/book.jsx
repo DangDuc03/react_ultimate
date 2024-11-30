@@ -13,11 +13,15 @@ const BooksPage = () => {
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
 
+    const [loadingTable, setLoadingTable] = useState(null)
+
+
     useEffect(() => {
         loadBooks()
     }, [current, pageSize])
 
     const loadBooks = async () => {
+        setLoadingTable(true)
         const response = await getAllBooksAPI(current, pageSize)
         if (response.data) {
             setDataBook(response.data.result)
@@ -25,6 +29,7 @@ const BooksPage = () => {
             setPageSize(response.data.meta.pageSize)
             setTotal(response.data.meta.total)
         }
+        setLoadingTable(false)
     }
 
     const onHandleUploadFile = (event) => {
@@ -67,6 +72,7 @@ const BooksPage = () => {
                 preview={preview}
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
+                loadingTable={loadingTable}
             />
         </div>
     )

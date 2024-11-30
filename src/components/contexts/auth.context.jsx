@@ -10,6 +10,7 @@ export const AuthContext = createContext({
 });
 
 export const AuthWrapper = (props) => {
+    const [isAppLoading, setIsAppLoading] = useState(true)
     const [userLogin, setUserLogin] = useState({
         email: "",
         phone: "",
@@ -19,7 +20,6 @@ export const AuthWrapper = (props) => {
         id: ""
     })
 
-    const [isAppLoading, setIsAppLoading] = useState(true)
 
     return (
         <AuthContext.Provider value={{ userLogin, setUserLogin, isAppLoading, setIsAppLoading }}>
